@@ -1,7 +1,9 @@
 <template>
     <div class="nav-bar-container">
         <figure>
-            <img src="/src/assets//nav-logo.png" alt="">
+            <router-link to="/">
+                <img src="/src/assets//nav-logo.png" alt="">
+            </router-link>
         </figure>
         <div class="nav-links">
             <router-link to="/" class="router-link">
