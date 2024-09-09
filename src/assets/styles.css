@@ -1,0 +1,79 @@
+.login-container{
+    display: flex;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    font-family: "DM mono", monospace;
+}
+
+.perfil-container{
+    width: calc (100vw - 300px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: 300px;
+    height: 100vh;
+}
+
+.login-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-self: center;
+    width: 100%;
+}
+
+.login-form form{
+    width: 60%;
+}
+
+.login-form h5{
+    color: #6B6C74;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.login-form h5:hover{
+    color: #CCD326;
+}
+
+.login-form h1, .perfil-container h1{
+    color:#241C4C;
+    margin-block: 0;
+    font-weight: 500;
+}
+
+.login-form h3, .perfil-container h3{
+    color: #6B6C74;
+    margin-block: 0;
+    font-weight: normal;
+    margin-bottom: 30px;
+}
+
+.login-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    background-color: #241C4C;
+    width: 60%;
+    height: 100%;
+}
+
+.login-box .lgpd{
+    font-size: 10px;
+    padding: 0 30px;
+    color: #6B6C74;
+}
+
+.login-box h3{
+    font-weight: 400;
+}
+
+.login-box figure{
+    margin-bottom: 50px;
+}
+.login-box img{
+    width: 130px;
+}

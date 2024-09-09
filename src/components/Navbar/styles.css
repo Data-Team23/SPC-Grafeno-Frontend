@@ -1,0 +1,37 @@
+.nav-bar-container{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 300px;
+    background-color: #241C4C;
+    height: 100%;
+}
+
+.nav-bar-container figure{
+    margin-block: 0;
+    margin-inline: 0;
+}
+.nav-bar-container img{
+    width: 130px;
+}
+
+.nav-links{
+    display: flex;
+    flex-direction: column;
+    color: #241C4C;
+}
+
+.router-link{
+    font-family: "DM mono", monospace;
+    background-color: #FFFFFF;
+    margin-bottom: 16px;
+    border-radius: 50px 0 0 50px;
+    padding: 10px 0 10px 24px;
+    text-align: start;
+    margin-left: 24px;
+}
+
+a:-webkit-any-link{
+    text-decoration: none !important;
+}
