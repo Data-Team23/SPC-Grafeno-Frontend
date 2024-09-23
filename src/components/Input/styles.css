@@ -5,6 +5,7 @@
     background-color: #D9D9D9;
     color: #909097;
     margin-bottom: 20px;
+    border-radius: 20px;
 }
 
 label i{
@@ -18,10 +19,11 @@ input{
     height: 100%;
     padding: 10px;
     border: 1px solid #D9D9D9;
-    font-family: "DM Mono", monospace;
+    font-family: var(--font-family);
     font-size: 16px;
     display: flex;
     align-items: center;
+    border-radius: 20px;
 }
 
 input:focus{

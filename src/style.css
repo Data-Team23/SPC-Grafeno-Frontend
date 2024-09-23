@@ -1,5 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
 :root {
-  font-family: "Nunito", sans-serif;
+  --font-family: "Roboto", sans-serif;
+
+  font-family: "Roboto", sans-serif;
   line-height: 1.5;
   font-weight: 400;
   color: rgba(255, 255, 255, 0.87);
@@ -33,5 +37,4 @@ header i:hover{
   text-align: center;
   width: 100%;
 }
-
 

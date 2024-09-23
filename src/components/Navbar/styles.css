@@ -23,7 +23,7 @@
 }
 
 .router-link{
-    font-family: "DM mono", monospace;
+    font-family: var(--font-family);
     background-color: #FFFFFF;
     margin-bottom: 16px;
     border-radius: 50px 0 0 50px;

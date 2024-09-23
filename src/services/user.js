@@ -11,8 +11,8 @@ const loginUser = async (payload) => {
 };
 
 const loginUserWithGoogle = async () => {
-    const data = await apiClient.get("/user/auth/google/");
-    return data
+    const googleAuthUrl = "http://localhost:8000/api/v1/user/auth/google/";
+    window.location.href = googleAuthUrl;
 };
 
 export {
