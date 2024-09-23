@@ -9,7 +9,10 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home
+    component: Home,
+    meta: { 
+      requiresAuth: true 
+    }
   },
   {
     path: "/login",
@@ -21,7 +24,7 @@ const routes = [
     name: "Perfil",
     component: Perfil,
     meta: { 
-        requiresAuth: true 
+      requiresAuth: true 
     }
   },
   {
