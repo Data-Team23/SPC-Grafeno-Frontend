@@ -61,7 +61,17 @@ const password = ref("");
 const router = useRouter();
 const authStore = useAuthStore();
 
+function isEmailValid(email) {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(email);
+}
+
 async function login() {
+    if (!isEmailValid(email.value)) {
+        toast.error("Por favor, insira um e-mail válido.");
+        return;
+    }
+
     const data = {
         email: email.value,
         password: password.value
@@ -80,7 +90,16 @@ async function login() {
             toast.error("Falha no login: tokens não recebidos.");
         }
     } catch (error) {
-        toast.error("Erro ao realizar login.");
+        if (error.response) {
+            const errorMessage = error.response.data.non_field_errors;
+            if (errorMessage && errorMessage.length > 0) {
+                toast.info(errorMessage[0]);
+            } else {
+                toast.error("Erro ao realizar login.");
+            }
+        } else {
+            toast.error("Erro ao realizar login.");
+        }
         console.error("Erro no login:", error);
     }
 }
