@@ -16,6 +16,17 @@
     height: 100vh;
 }
 
+.container{
+    width: calc (100vw - 300px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: 300px;
+    padding: 0 15px;
+    height: 100vh;
+}
+
 .login-form{
     display: flex;
     flex-direction: column;
@@ -36,6 +47,12 @@
 
 .login-form h5:hover{
     color: #CCD326;
+}
+
+.container h1, .container h3 {
+    color: #241C4C;
+    margin-block: 0;
+    width: 100%;
 }
 
 .login-form h1, .perfil-container h1{
