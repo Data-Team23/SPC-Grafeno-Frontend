@@ -14,6 +14,10 @@
 <script setup>
 import { ref } from 'vue';
 import Table from '../components/Table/Table.vue';
+import axios from 'axios';
+
+const apiUrl = import.meta.env.VITE_API_URL
+
 const data = ref([
 
     {
@@ -54,4 +58,13 @@ const data = ref([
     }
 ]
 )
+
+axios.get(`${apiUrl}/users`)
+  .then(response => {
+    console.log(response.data);
+    data.value = response.data
+  })
+  .catch(error => {
+    console.error('Erro:', error);
+  });
 </script>
