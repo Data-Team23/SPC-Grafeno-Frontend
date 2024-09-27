@@ -33,6 +33,13 @@
                 Títulos
             </router-link>
             <router-link
+                to="/dashboard" 
+                class="router-link" 
+                :class="{ 'active-link': route.path === '/dashboard' }"
+            >
+                Dashboard
+            </router-link>
+            <router-link
                 to="/users" 
                 class="router-link" 
                 :class="{ 'active-link': route.path === '/users' }"
