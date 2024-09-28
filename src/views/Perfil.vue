@@ -4,26 +4,36 @@
       <label class="close-button" @click="closeModal">✖</label>
       <h1 class="modal-title">Perfil</h1>
       <h3 class="modal-subtitle">Atualize seus dados</h3>
-      <form @submit.prevent="update" class="form">
+      <div class="form">
         <Input placeholder="Primeiro nome" v-model="userInfo.first_name" />
         <Input placeholder="Último nome" v-model="userInfo.last_name" />
         <Input placeholder="Número para contato" v-model="userInfo.contato" :mask="'(##) #####-####'" />
         <div class="button-group">
-          <Button textButton="Salvar" class="button-save" />
+          <Button textButton="Salvar" @click="update" class="button-save" />
           <Button textButton="Exportar CSV" @click="exportCSV" class="button-export" />
-          <Button textButton="Deletar conta" @click="deleteUser" class="button-delete" />
+          <Button textButton="Deletar conta" @click="openConfirmationModal" class="button-delete" />
         </div>
-      </form>
+      </div>
     </div>
+    <ConfirmationModal
+      v-if="showConfirmationModal"
+      :showModal="showConfirmationModal"
+      title="Confirmação de Deleção"
+      message="Tem certeza que deseja deletar sua conta? Você será deslogado do sistema!"
+      :action="deleteUser"
+      @close="showConfirmationModal = false"
+    />
   </div>
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from "vue";
+import { ref, defineProps, defineEmits } from "vue";
 import Input from "@/components/Input/Input.vue";
 import Button from "@/components/Button/Button.vue";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
 import { toast } from "vue3-toastify";
 import { userApi } from "@/services/api";
+import { useRouter } from "vue-router";
 
 const props = defineProps({
   showModal: {
@@ -37,6 +47,8 @@ const props = defineProps({
 });
 
 const emits = defineEmits(["close"]);
+const showConfirmationModal = ref(false);
+const router = useRouter();
 
 async function update() {
   const data = {
@@ -47,11 +59,16 @@ async function update() {
 
   try {
     await userApi.updateUser(props.userInfo.cpf, data);
-    toast.success("Dados atualizados com sucesso!");
+    toast.success("Usuário deletado!");
+    authStore.logout();
+    router.push('/login');
   } catch {
     toast.error("Falha na atualização dos dados");
   }
+}
 
+function openConfirmationModal() {
+  showConfirmationModal.value = true;
 }
 
 function exportCSV() {
@@ -72,8 +89,13 @@ function exportCSV() {
   document.body.removeChild(link);
 }
 
-function deleteUser() {
-  console.log("Deletando usuário:", props.userInfo.id);
+async function deleteUser() {
+  try {
+    await userApi.deleteUser(props.userInfo.cpf);
+    toast.success("Dados atualizados com sucesso!");
+  } catch {
+    toast.error("Erro ao deletar usuário");
+  }
   closeModal();
 }
 
