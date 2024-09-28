@@ -1,22 +1,17 @@
 <template>
   <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
     <div class="modal-content">
-      <button class="close-button" @click="closeModal">✖</button>
+      <label class="close-button" @click="closeModal">✖</label>
       <h1 class="modal-title">Perfil</h1>
       <h3 class="modal-subtitle">Atualize seus dados</h3>
       <form @submit.prevent="update" class="form">
-        <Input placeholder="Informe seu email" v-model="email" />
-        <Input placeholder="Informe seu nome" v-model="name" />
-        <Input placeholder="Informe seu CPF" v-model="cpf" />
-        <Input
-          placeholder="Informe sua senha"
-          icon="fa-solid fa-lock"
-          type="password"
-          v-model="password"
-        />
+        <Input placeholder="Primeiro nome" v-model="userInfo.first_name" />
+        <Input placeholder="Último nome" v-model="userInfo.last_name" />
+        <Input placeholder="Número para contato" v-model="userInfo.contato" :mask="'(##) #####-####'" />
         <div class="button-group">
           <Button textButton="Salvar" class="button-save" />
           <Button textButton="Exportar CSV" @click="exportCSV" class="button-export" />
+          <Button textButton="Deletar conta" @click="deleteUser" class="button-delete" />
         </div>
       </form>
     </div>
@@ -24,43 +19,48 @@
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits } from "vue";
+import { defineProps, defineEmits } from "vue";
 import Input from "@/components/Input/Input.vue";
 import Button from "@/components/Button/Button.vue";
+import { toast } from "vue3-toastify";
+import { userApi } from "@/services/api";
 
 const props = defineProps({
   showModal: {
     type: Boolean,
     required: true,
-  }
+  },
+  userInfo: {
+    type: Object,
+    required: true,
+  },
 });
+
 const emits = defineEmits(["close"]);
 
-const apiUrl = import.meta.env.VITE_API_URL
-
-const email = ref("");
-const name = ref("");
-const cpf = ref("");
-const password = ref("");
-
-function update() {
+async function update() {
   const data = {
-    email: email.value,
-    name: name.value,
-    cpf: cpf.value,
-    password: password.value
+    first_name: props.userInfo.first_name,
+    last_name: props.userInfo.last_name,
+    contato: props.userInfo.contato,
   };
-  console.log(data);
-  closeModal();
+
+  try {
+    await userApi.updateUser(props.userInfo.cpf, data);
+    toast.success("Dados atualizados com sucesso!");
+  } catch {
+    toast.error("Falha na atualização dos dados");
+  }
+
 }
 
 function exportCSV() {
   const data = [
-    ["Email", "Nome", "CPF", "Senha"],
-    [email.value, name.value, cpf.value, password.value]
+    ["Nome", "Sobrenome", "Contato"],
+    [props.userInfo.first_name, props.userInfo.last_name, props.userInfo.contato]
   ];
 
-  let csvContent = "data:text/csv;charset=utf-8," 
+  let csvContent = "data:text/csv;charset=utf-8,"
     + data.map(e => e.join(",")).join("\n");
 
   const encodedUri = encodeURI(csvContent);
@@ -70,6 +70,11 @@ function exportCSV() {
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
+}
+
+function deleteUser() {
+  console.log("Deletando usuário:", props.userInfo.id);
+  closeModal();
 }
 
 function closeModal() {
@@ -125,7 +130,7 @@ function closeModal() {
   margin-top: 20px;
 }
 
-.button-save, .button-export {
+.button-save, .button-export, .button-delete {
   background-color: #4CAF50;
   color: white;
   padding: 10px 15px;
@@ -138,5 +143,9 @@ function closeModal() {
 
 .button-export {
   background-color: #007BFF;
+}
+
+.button-delete {
+  background-color: #f44336;
 }
 </style>
