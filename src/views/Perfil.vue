@@ -36,10 +36,12 @@ const props = defineProps({
 });
 const emits = defineEmits(["close"]);
 
-const email = ref("joao@example.com");
-const name = ref("João Gabriel Santos");
-const cpf = ref("58.641.333-45");
-const password = ref("senha123");
+const apiUrl = import.meta.env.VITE_API_URL
+
+const email = ref("");
+const name = ref("");
+const cpf = ref("");
+const password = ref("");
 
 function update() {
   const data = {

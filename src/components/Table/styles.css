@@ -1,0 +1,48 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table caption{
+    display: none;
+}
+
+th, td {
+    border: 1px solid #dddddd;
+    padding: 8px;
+    text-align: left;
+    max-width: auto;
+    overflow: auto;
+}
+
+th {
+    background-color: #241C4C;
+    color: #FFFFFF;
+}
+
+tr {
+    color: #241C4C;
+}
+
+.pagination-buttons {
+    margin-top: 20px;
+    color: #241C4C;
+}
+
+.pagination-buttons span {
+    padding: 0 10px;
+}
+
+.table-container {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.edit-icon{
+    cursor: pointer;
+    color: red;
+}
+
+.edit-icon:hover{
+    color: #241C4C
+}
