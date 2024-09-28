@@ -4,6 +4,9 @@ import Navbar from "@/components/Navbar/Navbar.vue";
 import Footer from "@/components/Footer/Footer.vue";
 import Perfil from "@/views/Perfil.vue";
 import { ref } from "vue";
+import { useAuthStore } from "@/store/auth";
+
+const authStore = useAuthStore()
 
 const route = useRoute();
 const showModal = ref(false);
@@ -23,7 +26,12 @@ function closeModal() {
     <i class="fa-solid fa-user" @click="openModal"></i>
   </header>
 
-  <Perfil v-if="showModal" :showModal="showModal" @close="closeModal" />
+  <Perfil
+    v-if="showModal"
+    :showModal="showModal"
+    :userInfo="authStore.userInfo"
+    @close="closeModal"
+  />
 
   <main>
     <router-view></router-view>

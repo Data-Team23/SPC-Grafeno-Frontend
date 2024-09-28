@@ -100,7 +100,7 @@ async function register() {
         last_name: lastName,
         cpf: cpf.value.replace(/\D/g, ''),
         email: email.value,
-        contact: contact.value.replace(/\D/g, ''),
+        contato: contact.value.replace(/\D/g, ''),
         password: password.value
     };
 
