@@ -6,12 +6,15 @@
             <div class="form-group">
                 <div class="form-item" v-for="(value, key) in formData" :key="key">
                     <label :for="key">{{ columnNames[key] || key }}</label>
-                    <input
-                        v-if="key === 'is_admin'"
-                        v-model="formData[key]"
-                        type="checkbox"
-                        :id="key"
-                    />
+                    <div v-if="key === 'is_admin'" class="toggle-switch">
+                        <input
+                            type="checkbox"
+                            :id="key"
+                            v-model="formData[key]"
+                            class="toggle-input"
+                        />
+                        <label :for="key" class="toggle-label"></label>
+                    </div>
                     <div class="form-key" v-else>
                         {{ formData[key] }}
                     </div>
@@ -91,13 +94,6 @@ h2 {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    justify-content: space-between;
-}
-
-.form-key {
-    width: 100%;
-    border: 1px solid hsl(0, 0%, 17%);
-    border-radius: 5px;
 }
 
 .form-item {
@@ -116,25 +112,43 @@ label {
     font-family: 'Roboto', sans-serif;
 }
 
-input[type="text"], input[type="checkbox"] {
-    padding: 10px;
-    font-size: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    transition: border-color 0.3s ease;
-    font-family: 'Roboto', sans-serif;
-    width: 100%; /* Garantindo que o input ocupe toda a largura */
+.toggle-switch {
+    position: relative;
 }
 
-input[type="text"]:focus {
-    outline: none;
-    border-color: #007bff;
-    box-shadow: 0 0 10px rgba(0, 123, 255, 0.2);
+.toggle-input {
+    display: none;
 }
 
-input[type="checkbox"] {
-    width: auto;
-    margin-top: 5px;
+.toggle-label {
+    width: 50px;
+    height: 26px;
+    background-color: #ddd;
+    border-radius: 50px;
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.toggle-label:before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    transition: transform 0.3s;
+}
+
+.toggle-input:checked + .toggle-label {
+    background-color: #28a745;
+}
+
+.toggle-input:checked + .toggle-label:before {
+    transform: translateX(24px);
 }
 
 .button-group {
@@ -179,7 +193,7 @@ button {
     font-weight: bold;
     color: #666;
     cursor: pointer;
-    transition: color 0.3s ease;
+    transition: color 0.3s;
 }
 
 .close:hover {

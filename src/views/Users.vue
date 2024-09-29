@@ -63,7 +63,6 @@ const formattedData = computed(() => {
       ...user,
       created_at: formatDate(user.created_at),
       updated_at: formatDate(user.updated_at),
-      is_admin: user.is_admin ? "✔️" : "❌"
     }));
 });
   
@@ -98,9 +97,20 @@ const deleteRow = async () => {
     showConfirmationModal.value = false;
 };
   
-const updateRow = async () => {
-    console.log("Update row");
+const updateRow = async (updatedData) => {
+    if (!currentRow.value) return;
+
+    try {
+        const cpf = currentRow.value.cpf;
+        await userApi.updateUser(cpf, updatedData);
+        await fetchUsers();
+        toast.success("Usuário atualizado com sucesso!");
+    } catch (error) {
+        toast.error("Erro ao atualizar usuário.");
+    }
+    showEditModal.value = false; 
 };
+
 </script>
   
   

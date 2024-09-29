@@ -6,6 +6,7 @@
         <tr v-if="columnNames.length <= 0">
           <th v-for="(value, index) in paginatedData[0]" :key="index">{{ index }}</th>
           <th v-if="showEditColumn"></th>
+          <th v-if="showDeleteColumn"></th>
         </tr>
         <tr v-if="columnNames.length > 0">
           <th v-for="(name, index) in columnNames" :key="index">{{ name }}</th>
@@ -24,8 +25,9 @@
           </td>
         </tr>
         <tr v-for="index in emptyRows" :key="'empty-'+index">
-          <td v-for="col in columnNames.length + (showEditColumn || showDeleteColumn ? 1 : 0)" :key="'empty-col-'+col">
-          </td>
+          <td v-for="col in displayColumns.length" :key="'empty-col-'+col"></td>
+          <td v-if="showEditColumn"></td>
+          <td v-if="showDeleteColumn"></td>
         </tr>
       </tbody>
     </table>
@@ -38,7 +40,7 @@
 </template>
 
 <script setup>
-import './styles.css'
+import './styles.css';
 import { ref, computed, defineEmits } from 'vue';
 
 const emit = defineEmits(['editRow', 'deleteRow']);
