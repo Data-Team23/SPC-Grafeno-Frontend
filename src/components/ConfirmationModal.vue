@@ -38,12 +38,12 @@ action: {
 const emits = defineEmits(["close"]);
 
 function confirmAction() {
-props.action();
-closeModal();
+  props.action();
+  closeModal();
 }
 
 function closeModal() {
-emits("close");
+  emits("close");
 }
 </script>
 
@@ -54,11 +54,11 @@ emits("close");
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5); /* Fundo escurecido */
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
-  align-items: center; /* Centraliza verticalmente */
-  z-index: 1000; /* Coloca o modal acima de outros elementos */
+  align-items: center;
+  z-index: 1000;
 }
 
 .modal-content {
@@ -114,6 +114,6 @@ emits("close");
 }
 
 .button-cancel {
-  background-color: #f44336; /* Cor do botão de cancelar */
+  background-color: #f44336;
 }
 </style>

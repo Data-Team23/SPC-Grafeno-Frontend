@@ -24,10 +24,16 @@ const loginUserWithGoogle = async () => {
     window.location.href = googleAuthUrl;
 };
 
+const listUser = async () => {
+    const data = await apiClient.get("/user/members/");
+    return data;
+};
+
 export {
     createUser,
     updateUser,
     deleteUser,
     loginUser,
     loginUserWithGoogle,
+    listUser,
 };

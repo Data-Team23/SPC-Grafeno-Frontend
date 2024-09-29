@@ -1,48 +1,91 @@
 table {
     width: 100%;
     border-collapse: collapse;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    font-family: var(--font-family);
+    margin-bottom: 20px;
 }
 
-table caption{
+table caption {
     display: none;
-}
-
-th, td {
-    border: 1px solid #dddddd;
-    padding: 8px;
-    text-align: left;
-    max-width: auto;
-    overflow: auto;
 }
 
 th {
     background-color: #241C4C;
     color: #FFFFFF;
+    padding: 12px;
+    text-align: left;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+    border: none;
+    border-bottom: 2px solid #DDD;
 }
 
-tr {
+td {
+    border: none;
+    padding: 12px;
+    text-align: left;
+    max-width: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    height: 20px;
+    background-color: #F7F7F7;
+    color: black;
+}
+
+tr:nth-child(even) td {
+    background-color: #EFEFEF;
+}
+
+tr:hover td {
+    background-color: #E0E0E0;
+}
+
+.empty-row td {
+    height: 40px;
+    background-color: #F9F9F9;
+    color: #999999;
+}
+
+.edit-icon {
+    cursor: pointer;
+    color: #E74C3C;
+    transition: color 0.3s ease;
+}
+
+.edit-icon:hover {
     color: #241C4C;
 }
 
 .pagination-buttons {
+    display: flex;
+    justify-content: center;
     margin-top: 20px;
-    color: #241C4C;
+}
+
+.pagination-buttons button {
+    background-color: #241C4C;
+    color: #FFFFFF;
+    border: none;
+    padding: 10px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    margin: 0 5px;
+    transition: background-color 0.3s ease;
+}
+
+.pagination-buttons button:disabled {
+    background-color: #B5B5B5;
+    cursor: not-allowed;
+}
+
+.pagination-buttons button:not(:disabled):hover {
+    background-color: #3B2D7E;
 }
 
 .pagination-buttons span {
-    padding: 0 10px;
-}
-
-.table-container {
-    max-height: 300px;
-    overflow-y: auto;
-}
-
-.edit-icon{
-    cursor: pointer;
-    color: red;
-}
-
-.edit-icon:hover{
-    color: #241C4C
+    font-size: 14px;
+    color: #241C4C;
+    padding: 10px;
 }
