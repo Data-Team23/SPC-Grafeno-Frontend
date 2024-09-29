@@ -22,7 +22,7 @@ function closeModal() {
 
 <template>
   <header v-if="route.path !== '/login' && route.path !== '/register'">
-    <Navbar/>
+    <Navbar />
     <i class="fa-solid fa-user" @click="openModal"></i>
   </header>
 
@@ -37,7 +37,7 @@ function closeModal() {
     <router-view></router-view>
   </main>
 
-  <footer>
+  <footer v-if="route.path !== '/login' && route.path !== '/register'">
     <Footer />
   </footer>
 </template>
