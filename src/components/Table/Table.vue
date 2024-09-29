@@ -10,15 +10,16 @@
         <tr v-if="columnNames.length > 0">
           <th v-for="(name, index) in columnNames" :key="index">{{ name }}</th>
           <th v-if="showEditColumn"></th>
+          <th v-if="showDeleteColumn"></th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(row, index) in paginatedData" :key="index">
           <td v-for="(name, colIndex) in displayColumns" :key="colIndex">{{ row[name] }}</td>
-          <td v-if="showEditColumn" class="edit-icon" @click="editRow(row, idPropName)">
+          <td v-if="showEditColumn" class="edit-icon" @click="() => emitEditRow(row)">
             <i class="fa-regular fa-pen-to-square"></i>
           </td>
-          <td v-if="showDeleteColumn" class="edit-icon" @click="openConfirmationModal(row)">
+          <td v-if="showDeleteColumn" class="edit-icon" @click="() => emitDeleteRow(row)">
             <i class="fa-solid fa-trash"></i>
           </td>
         </tr>
@@ -28,14 +29,6 @@
         </tr>
       </tbody>
     </table>
-    <ConfirmationModal
-      v-if="showConfirmationModal"
-      :showModal="showConfirmationModal"
-      title="Confirmação de Deleção"
-      message="Tem certeza que deseja excluir?"
-      :action="deleteRow"
-      @close="showConfirmationModal = false"
-    />
     <div class="pagination-buttons">
       <button @click="previousPage" :disabled="currentPage === 1">Anterior</button>
       <span>Página {{ currentPage }} de {{ totalPages }}</span>
@@ -45,19 +38,10 @@
 </template>
 
 <script setup>
-import { ref, watch, computed } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
-import ConfirmationModal from "@/components/ConfirmationModal.vue";
-import { userApi } from "@/services/api";
-import { toast } from "vue3-toastify";
 import './styles.css'
+import { ref, computed, defineEmits } from 'vue';
 
-const router = useRouter();
-const route = useRoute();
-const showConfirmationModal = ref(false);
-const currentPage = ref(1);
-const currentRow = ref(null);
-const totalPages = computed(() => Math.ceil(props.data.length / props.itemsPerPage));
+const emit = defineEmits(['editRow', 'deleteRow']);
 
 const props = defineProps({
   data: {
@@ -90,14 +74,13 @@ const props = defineProps({
   }
 });
 
+const currentPage = ref(1);
+const totalPages = computed(() => Math.ceil(props.data.length / props.itemsPerPage));
+
 const paginatedData = computed(() => {
-  if (Array.isArray(props.data)) {
-    const startIndex = (currentPage.value - 1) * props.itemsPerPage;
-    const endIndex = currentPage.value * props.itemsPerPage;
-    return props.data.slice(startIndex, endIndex);
-  } else {  
-    return [];
-  }
+  const startIndex = (currentPage.value - 1) * props.itemsPerPage;
+  const endIndex = currentPage.value * props.itemsPerPage;
+  return props.data.slice(startIndex, endIndex);
 });
 
 const nextPage = () => {
@@ -112,43 +95,16 @@ const previousPage = () => {
   }
 };
 
-const editRow = (row, idPropName) => {
-  const idValue = row[idPropName];
-  const currentPath = route.fullPath;
-  const newPath = `${currentPath}/${idValue}`;
-  router.push(newPath);
-};
-
-
-function openConfirmationModal(row) {
-  showConfirmationModal.value = true;
-  currentRow.value = row;
-}
-
-const deleteRow = async () => {
-  if (!currentRow.value) return;
-
-  try {
-    const cpf = currentRow.value.cpf;
-    console.log("cpf", cpf);
-    await userApi.deleteUser(cpf);
-    const index = props.data.indexOf(currentRow.value);
-    if (index > -1) {
-      props.data.splice(index, 1);
-    }
-    toast.success("Excluído com sucesso!!");
-  } catch (error) {
-    toast.error("Erro ao excluir.");
-  }
-
-  showConfirmationModal.value = false;
-};
 const emptyRows = computed(() => {
   const remainingRows = props.itemsPerPage - paginatedData.value.length;
   return remainingRows > 0 ? remainingRows : 0;
 });
 
-watch(currentPage, () => {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-});
+const emitEditRow = (row) => {
+  emit("editRow", row);
+};
+
+const emitDeleteRow = (row) => {
+  emit("deleteRow", row);
+};
 </script>
