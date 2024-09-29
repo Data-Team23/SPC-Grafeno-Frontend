@@ -5,6 +5,7 @@ import Footer from "@/components/Footer/Footer.vue";
 import Perfil from "@/views/Perfil.vue";
 import { ref } from "vue";
 import { useAuthStore } from "@/store/auth";
+import router from "./router";
 
 const authStore = useAuthStore()
 
@@ -23,7 +24,11 @@ function closeModal() {
 <template>
   <header v-if="route.path !== '/login' && route.path !== '/register'">
     <Navbar />
-    <i class="fa-solid fa-user" @click="openModal"></i>
+    <i 
+      v-if="route.path !== '/dashboard'"
+      class="fa-solid fa-user" 
+      @click="openModal">
+    </i>
   </header>
 
   <Perfil
@@ -53,5 +58,17 @@ function closeModal() {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+html, body {
+  overflow: hidden;
+  height: 100%;
+}
+
+main {
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 </style>
