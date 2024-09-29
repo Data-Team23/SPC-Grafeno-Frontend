@@ -32,6 +32,14 @@
             >
                 Títulos
             </router-link>
+            <router-link
+                to="/users" 
+                class="router-link" 
+                :class="{ 'active-link': route.path === '/users' }"
+                v-if="authStore.userInfo?.is_admin"
+            >
+                Usuários
+            </router-link>
         </div>
         <div class="logout">
             <button @click="logout">SAIR</button>
@@ -51,7 +59,7 @@ export default {
     setup() {
         const authStore = useAuthStore();
         const router = useRouter();
-        const route = useRoute();
+        const route = useRoute();   
 
         function logout() {
             authStore.logout();
@@ -66,6 +74,7 @@ export default {
             logout,
             goToHome,
             route,
+            authStore,
         };
     }
 }

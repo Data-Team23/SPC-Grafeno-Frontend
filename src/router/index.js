@@ -32,11 +32,14 @@ const routes = [
     path: "/register",
     name: "Register",
     component: Register
-    },
-    {
-        path: '/users',
-        name: 'Users',
-        component: Users
+  },
+  {
+    path: '/users',
+    name: 'Users',
+    component: Users,
+    meta: { 
+      requiresAuth: true 
+    }
   }
 ];
 
