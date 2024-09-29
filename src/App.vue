@@ -54,4 +54,16 @@ function closeModal() {
   justify-content: center;
   align-items: center;
 }
+
+html, body {
+  overflow: hidden;
+  height: 100%;
+}
+
+main {
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 </style>
