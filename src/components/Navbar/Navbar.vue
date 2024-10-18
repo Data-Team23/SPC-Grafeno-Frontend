@@ -26,11 +26,11 @@
                 Risco de Terceiros
             </router-link>
             <router-link 
-                to="/titulos" 
+                to="/datasets" 
                 class="router-link" 
-                :class="{ 'active-link': route.path === '/titulos' }"
+                :class="{ 'active-link': route.path === '/datasets' }"
             >
-                Títulos
+                Datasets
             </router-link>
             <router-link
                 to="/dashboard" 

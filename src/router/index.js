@@ -6,6 +6,7 @@ import Perfil from "../views/Perfil.vue";
 import Register from "../views/Register.vue";
 import Users from '../views/Users.vue';
 import Dashboard from '../views/Dashboard.vue';
+import Datasets from "../views/Datasets.vue";
 
 const routes = [
   {
@@ -48,6 +49,14 @@ const routes = [
     component: Dashboard,
     meta: { 
       requiresAuth: true 
+    }
+  },
+  {
+    path: '/datasets',
+    name: 'Datasets',
+    component: Datasets,
+    meta: {
+      requiresAuth: true
     }
   }
 ];

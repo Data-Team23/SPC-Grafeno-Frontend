@@ -19,6 +19,12 @@ th {
     letter-spacing: 0.05em;
     border: none;
     border-bottom: 2px solid #DDD;
+    cursor: pointer;
+}
+
+th span{
+    font-weight: bolder;
+    font-size: 12px;
 }
 
 td {
