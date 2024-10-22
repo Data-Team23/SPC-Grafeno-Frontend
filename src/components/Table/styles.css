@@ -95,3 +95,8 @@ tr:hover td {
     color: #241C4C;
     padding: 10px;
 }
+
+.filter-container{
+    display: flex;
+    justify-content: flex-end;
+}

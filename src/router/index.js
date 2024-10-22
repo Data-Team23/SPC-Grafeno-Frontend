@@ -56,7 +56,7 @@ const routes = [
     name: 'Datasets',
     component: Datasets,
     meta: {
-      requiresAuth: true
+      requiresAuth: false
     }
   }
 ];

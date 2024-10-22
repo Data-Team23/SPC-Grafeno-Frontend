@@ -1,8 +1,16 @@
 <template>
   <div>
-    <div>
+    <div class="filter-container">
+        <Select
+          v-model="selectedColunm"
+          :options="displayColumns"
+          placeholder="Selecione o tipo de filtro"
+        >
+        </Select>
         <Input
-            placeholder="Filtrar"
+          placeholder="Filtrar"
+          icon="fa-solid fa-magnifying-glass"
+          v-model="filterQuery"
         />
     </div>
     <table v-if="paginatedData">
@@ -70,6 +78,7 @@
 
 <script setup>
 import Input from "@/components/Input/Input.vue";
+import Select from "@/components/Select/Select.vue";
 import "./styles.css";
 import { ref, computed, defineEmits } from "vue";
 
