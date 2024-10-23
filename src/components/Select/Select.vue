@@ -3,8 +3,8 @@
       <i :class="icon"></i>
       <select class="select" :value="modelValue" @change="updateSelection">
         <option value="" disabled>{{ placeholder }}</option>
-        <option v-for="option in options" :key="option" :value="option">
-          {{ option }}
+        <option v-for="option in options" :key="option.value" :value="option.value">
+          {{ option.label }}
         </option>
       </select>
     </label>

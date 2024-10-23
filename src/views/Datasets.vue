@@ -3,7 +3,7 @@
       <h1>Listagem de Usuários</h1>
       <br>
       <br>
-      <TableNew
+      <TableComponent
         :data="data"
         :display-columns="['email', 'first_name', 'cpf', 'contato', 'created_at', 'updated_at', 'is_admin']"
         :column-names="['Email', 'Nome', 'CPF', 'Contato', 'Criado em:', 'Atualizado em:', 'Admin']"
@@ -33,7 +33,7 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import Table from "../components/Table/Table.vue";
-import TableNew from "../components/Table/TableNew.vue";
+import TableComponent from "../components/Table/TableComponent.vue";
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
 import EditModal from "@/components/EditModal.vue";
 import { userApi } from "@/services/api";

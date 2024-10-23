@@ -2,8 +2,8 @@
   <div>
     <div class="filter-container">
         <Select
-          v-model="selectedColunm"
-          :options="displayColumns"
+          v-model="selectedColumn"
+          :options="filterOptions"
           placeholder="Selecione o tipo de filtro"
         >
         </Select>
@@ -118,7 +118,7 @@ const props = defineProps({
 const sortColumn = ref(null);
 const sortDirection = ref("asc");
 const filterQuery = ref("")
-
+const selectedColumn = ref("");
 
 const currentPage = ref(1);
 const totalPages = computed(() =>
@@ -143,13 +143,21 @@ const previousPage = () => {
   }
 };
 
+const filterOptions = computed(() =>
+  props.columnNames.map((name, index) => ({
+    label: name,
+    value: props.displayColumns[index],
+  }))
+);
+
 const filteredData = computed(() => {
   if (!filterQuery.value) return props.data;
 
-  return props.data.filter((item) =>
-    props.displayColumns.some((col) =>
-      String(item[col]).toLowerCase().includes(filterQuery.value.toLowerCase())
-    )
+  return props.data.filter((item) => {
+    return String(item[selectedColumn.value])
+      .toLowerCase()
+      .includes(filterQuery.value.toLowerCase())
+    }
   );
 });
 
