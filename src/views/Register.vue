@@ -34,6 +34,18 @@
             </form>
             <Footer></Footer>
         </div>
+
+        <div v-if="showCodeModal" class="modal-overlay">
+            <div class="modal">
+                <h2>Inserir Código de Verificação</h2>
+                <Input placeholder="Código" v-model="verificationCode" />
+                <div class="modal-buttons">
+                    <button @click="verifyCode" class="accept-button">Verificar</button>
+                    <button @click="closeCodeModal" class="reject-button">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
         <div v-if="showModal" class="modal-overlay">
             <div class="modal">
                 <h2>Termos de Uso e Política de Privacidade</h2>
@@ -91,7 +103,10 @@ const password = ref("");
 const confirmPassword = ref("");
 const acceptedTerms = ref(false);
 const showModal = ref(false);
+const showCodeModal = ref(false);
+const verificationCode = ref("");
 const router = useRouter();
+const member_id = ref("");
 
 function isEmailValid(email) {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -129,14 +144,33 @@ async function register() {
 
     try {
         const response = await userApi.createUser(data);
-        if (response.status === 201) {
-            toast.success("Cadastro bem-sucedido!");
-            router.push("/");
+        if (response.status === 200) {
+            toast.success("Cadastro bem-sucedido! Um código de verificação foi enviado para seu e-mail.");
+            member_id.value = response.data.member_id
+            showCodeModal.value = true;
         } else {
             toast.error("Falha no cadastro");
         }
     } catch (error) {
         toast.error("Erro ao realizar o cadastro.");
+    }
+}
+
+async function verifyCode() {
+    try {
+        const data = {
+            member_id: member_id.value,
+            otp_code: verificationCode.value,
+        };
+        const response = await userApi.verifyCode(data);
+        if (response.status === 201) {
+            toast.success("Código verificado com sucesso!");
+            router.push("/");
+        } else {
+            toast.error("Código inválido. Tente novamente.");
+        }
+    } catch (error) {
+        toast.error("Erro ao verificar o código.");
     }
 }
 
@@ -146,6 +180,14 @@ function openModal() {
 
 function closeModal() {
     showModal.value = false;
+}
+
+function openCodeModal() {
+    showCodeModal.value = true;
+}
+
+function closeCodeModal() {
+    showCodeModal.value = false;
 }
 
 function acceptTerms() {
@@ -193,106 +235,5 @@ function rejectTerms() {
     border: none;
     font-size: 20px;
     cursor: pointer;
-}
-
-.terms-checkbox {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 10px 0;
-}
-
-.styled-checkbox {
-    display: none;
-}
-
-.styled-checkbox + label {
-    position: relative;
-    padding-left: 30px;
-    cursor: pointer;
-}
-
-.styled-checkbox + label:before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 20px;
-    height: 20px;
-    border: 2px solid #333;
-    border-radius: 3px;
-    background: white;
-}
-
-.styled-checkbox:checked + label:before {
-    background: #007bff; 
-    border-color: #007bff;
-}
-
-.terms-label {
-    color: black;
-}
-
-.link {
-    color: blue;
-    cursor: pointer;
-    text-decoration: underline;
-}
-
-.login-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.custom-close {
-    all: unset;
-    cursor: pointer;
-}
-
-.modal-buttons {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 20px;
-}
-
-.accept-button {
-    background-color: #28a745;
-    color: white;
-    margin-left: 10px;
-}
-
-.reject-button {
-    background-color: #dc3545;
-    color: white;
-    margin-left: 10px;
-}
-
-
-.accept-button,
-.reject-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.accept-button:hover {
-    background-color: #218838;
-}
-
-.reject-button:hover {
-    background-color: #c82333;
-}
-
-.modal h2,
-.modal p {
-    text-align: left;
-}
-
-.reduced-space {
-    margin-bottom: -20px;
 }
 </style>
