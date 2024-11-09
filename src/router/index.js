@@ -6,7 +6,7 @@ import Perfil from "../views/Perfil.vue";
 import Register from "../views/Register.vue";
 import Users from '../views/Users.vue';
 import Dashboard from '../views/Dashboard.vue';
-import Datasets from "../views/Datasets.vue";
+import Clientes from "../views/Clients.vue";
 
 const routes = [
   {
@@ -52,9 +52,9 @@ const routes = [
     }
   },
   {
-    path: '/datasets',
-    name: 'Datasets',
-    component: Datasets,
+    path: '/clientes',
+    name: 'Clientes',
+    component: Clientes,
     meta: {
       requiresAuth: false
     }

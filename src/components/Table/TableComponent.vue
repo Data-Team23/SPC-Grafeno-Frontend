@@ -1,17 +1,17 @@
 <template>
   <div>
     <div class="filter-container">
-        <Select
+        <!-- <Select
           v-model="selectedColumn"
           :options="filterOptions"
-          placeholder="Selecione o tipo de filtro"
+          placeholder="Selecione o cluster"
         >
-        </Select>
-        <Input
+        </Select> -->
+        <!-- <Input
           placeholder="Filtrar"
           icon="fa-solid fa-magnifying-glass"
           v-model="filterQuery"
-        />
+        /> -->
     </div>
     <table v-if="paginatedData">
       <caption>

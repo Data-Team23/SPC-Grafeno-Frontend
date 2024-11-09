@@ -1,12 +1,17 @@
 <template>
     <div class="container">
-      <h1>Listagem de Usuários</h1>
-      <br>
+      <div class="select-container">
+        <Select
+          v-model="selectedCluster"
+          :options="filterOptions"
+          placeholder="Selecione o cluster">
+        </Select>
+      </div>
       <br>
       <TableComponent
         :data="data"
-        :display-columns="['email', 'first_name', 'cpf', 'contato', 'created_at', 'updated_at', 'is_admin']"
-        :column-names="['Email', 'Nome', 'CPF', 'Contato', 'Criado em:', 'Atualizado em:', 'Admin']"
+        :display-columns="['participant_id', 'R', 'F', 'M', 'Cluster']"
+        :column-names="['Payment', 'Ressência', 'Frequência', 'Valor Monetário (R$)', 'Cluster']"
         :show-delete-column="true"
         :show-edit-column="true"
         @editRow="openEditModal"
@@ -31,91 +36,86 @@
   </template>
   
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { onMounted, ref } from "vue";
 import Table from "../components/Table/Table.vue";
+import Select from "@/components/Select/Select.vue";
 import TableComponent from "../components/Table/TableComponent.vue";
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
 import EditModal from "@/components/EditModal.vue";
 import { userApi } from "@/services/api";
 import { toast } from "vue3-toastify";
-'email', 'first_name', 'cpf', 'contato', 'created_at', 'updated_at', 'is_admin'
+
+const selectedCluster = ref("");
+const filterOptions = ref([
+  {
+    label: 'Cluster 1',
+    value: 1,
+  },
+  {
+    label: 'Cluster 2',
+    value: 2,
+  },
+  {
+    label: 'Cluster 3',
+    value: 3,
+  },
+  {
+    label: 'Cluster 4',
+    value: 4,
+  },
+])
+
 const data = ref([
-    {
-        'email':'joao@gmail.com',
-        'first_name':'João',
-        'cpf':'482.222.334-78',
-        'contato':'12996778899',
-        'created_at':'17/10/2024',
-        'updated_at':'17/10/2024',
-        'is_admin': true
-    },
-    {
-        'email':'carlos@gmail.com',
-        'first_name':'Carlos',
-        'cpf':'482.222.334-78',
-        'contato':'12996778899',
-        'created_at':'17/10/2024',
-        'updated_at':'17/10/2024',
-        'is_admin': true
-    },
-    {
-        'email':'mateus@gmail.com',
-        'first_name':'Mateus',
-        'cpf':'482.222.334-78',
-        'contato':'12996778899',
-        'created_at':'17/11/2024',
-        'updated_at':'17/10/2024',
-        'is_admin': true
-    },
-    {
-        'email':'brian@gmail.com',
-        'first_name':'Brian',
-        'cpf':'482.222.334-78',
-        'contato':'03996778899',
-        'created_at':'07/10/2024',
-        'updated_at':'17/10/2024',
-        'is_admin': true
-    },
-    {
-        'email':'alex@gmail.com',
-        'first_name':'alex',
-        'cpf':'482.222.334-78',
-        'contato':'02996778899',
-        'created_at':'27/10/2024',
-        'updated_at':'17/10/2024',
-        'is_admin': true
-    },
-    {
-        'email':'lucas@gmail.com',
-        'first_name':'Lucas',
-        'cpf':'212.132.334-78',
-        'contato':'42996778899',
-        'created_at':'17/10/2024',
-        'updated_at':'17/10/2024',
-        'is_admin': true
-    },
-    {
-        'email':'marcos@gmail.com',
-        'first_name':'Marcos',
-        'cpf':'482.201.334-78',
-        'contato':'32996778899',
-        'created_at':'17/10/2024',
-        'updated_at':'17/10/2024',
-        'is_admin': true
-    },
-    {
-        'email':'moritz@gmail.com',
-        'first_name':'Moritz',
-        'cpf':'552.222.334-78',
-        'contato':'22996778899',
-        'created_at':'17/10/2024',
-        'updated_at':'17/10/2024',
-        'is_admin': true
-    },
+  {
+    'participant_id':'00d69eec-21b4-470b-b21b-cb3932bb7fdb',
+    'R': -1.105839,
+    'F': -0.512976,
+    'M': -0.734680, 
+    'Cluster': 1      
+  },
+  {
+    'participant_id':'00d69eec-21b4-470b-b21b-cb3932bb7fdb',
+    'R': -1.105839,
+    'F': -0.512976,
+    'M': -0.734680, 
+    'Cluster': 1      
+  },
+  {
+    'participant_id':'00d69eec-21b4-470b-b21b-cb3932bb7fdb',
+    'R': -1.105839,
+    'F': -0.512976,
+    'M': -0.734680, 
+    'Cluster': 1      
+  },
+  {
+    'participant_id':'00d69eec-21b4-470b-b21b-cb3932bb7fdb',
+    'R': -1.105839,
+    'F': -0.512976,
+    'M': -0.734680, 
+    'Cluster': 1      
+  },
+  {
+    'participant_id':'00d69eec-21b4-470b-b21b-cb3932bb7fdb',
+    'R': -1.105839,
+    'F': -0.512976,
+    'M': -0.734680, 
+    'Cluster': 1      
+  },
+  {
+    'participant_id':'00d69eec-21b4-470b-b21b-cb3932bb7fdb',
+    'R': -1.105839,
+    'F': -0.512976,
+    'M': -0.734680, 
+    'Cluster': 1      
+  }
 ]);
 const showConfirmationModal = ref(false);
 const showEditModal = ref(false);
 const currentRow = ref(null);
+
+onMounted(() => {
+  console.log(selectedCluster.value)
+})
   
 const openEditModal = (row) => {
     currentRow.value = { ...row };

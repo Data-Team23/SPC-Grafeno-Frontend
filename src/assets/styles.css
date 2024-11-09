@@ -27,6 +27,12 @@
     height: 100vh;
 }
 
+.container .select-container{
+    display: flex;
+    justify-content: end;
+    width: 72%;
+}
+
 .login-form{
     display: flex;
     flex-direction: column;
