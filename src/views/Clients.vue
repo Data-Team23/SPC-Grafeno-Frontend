@@ -1,51 +1,23 @@
 <template>
-    <div class="container">
-      <div class="select-container">
-        <Select
-          v-model="selectedCluster"
-          :options="filterOptions"
-          placeholder="Selecione o cluster">
-        </Select>
-      </div>
-      <br>
-      <TableComponent
-        :data="data"
-        :display-columns="['participant_id', 'R', 'F', 'M', 'Cluster']"
-        :column-names="['Payment', 'Ressência', 'Frequência', 'Valor Monetário (R$)', 'Cluster']"
-        :show-delete-column="true"
-        :show-edit-column="true"
-        @editRow="openEditModal"
-        @deleteRow="openConfirmationModal"
-      />
-      <ConfirmationModal
-        v-if="showConfirmationModal"
-        :showModal="showConfirmationModal"
-        title="Confirmação de Deleção"
-        message="Tem certeza que deseja excluir?"
-        :action="deleteRow"
-        @close="showConfirmationModal = false"
-      />
-      <EditModal
-        v-if="showEditModal"
-        :showModal="showEditModal"
-        :rowData="currentRow"
-        @save="updateRow"
-        @close="showEditModal = false"
-      />
+  <div class="container">
+    <div class="select-container">
+      <h1>Listagem de Clientes</h1>
+      <br><br>
+      <Select v-model="selectedCluster" :options="filterOptions" placeholder="Selecione o cluster">
+      </Select>
+      <TableComponent :data="data" :display-columns="['participant_id', 'R', 'F', 'M', 'Cluster']"
+        :column-names="['Payment', 'Ressência', 'Frequência', 'Valor Monetário (R$)', 'Cluster']" />
     </div>
-  </template>
-  
+  </div>
+</template>
+
 <script setup>
-import { onMounted, ref } from "vue";
-import Table from "../components/Table/Table.vue";
+import { onMounted, ref, watch } from "vue";
 import Select from "@/components/Select/Select.vue";
 import TableComponent from "../components/Table/TableComponent.vue";
-import ConfirmationModal from "@/components/ConfirmationModal.vue";
-import EditModal from "@/components/EditModal.vue";
-import { userApi } from "@/services/api";
 import { toast } from "vue3-toastify";
+import { clientApi } from "../services/api";
 
-const selectedCluster = ref("");
 const filterOptions = ref([
   {
     label: 'Cluster 1',
@@ -67,97 +39,85 @@ const filterOptions = ref([
 
 const data = ref([
   {
-    'participant_id':'00d69eec-21b4-470b-b21b-cb3932bb7fdb',
+    'participant_id': '00d69eec-21b4-470b-b21b-cb3932bb7fdb',
     'R': -1.105839,
     'F': -0.512976,
-    'M': -0.734680, 
-    'Cluster': 1      
+    'M': -0.734680,
+    'Cluster': 1
   },
   {
-    'participant_id':'00d69eec-21b4-470b-b21b-cb3932bb7fdb',
+    'participant_id': '00d69eec-21b4-470b-b21b-cb3932bb7fdb',
     'R': -1.105839,
     'F': -0.512976,
-    'M': -0.734680, 
-    'Cluster': 1      
+    'M': -0.734680,
+    'Cluster': 1
   },
   {
-    'participant_id':'00d69eec-21b4-470b-b21b-cb3932bb7fdb',
+    'participant_id': '00d69eec-21b4-470b-b21b-cb3932bb7fdb',
     'R': -1.105839,
     'F': -0.512976,
-    'M': -0.734680, 
-    'Cluster': 1      
+    'M': -0.734680,
+    'Cluster': 1
   },
   {
-    'participant_id':'00d69eec-21b4-470b-b21b-cb3932bb7fdb',
+    'participant_id': '00d69eec-21b4-470b-b21b-cb3932bb7fdb',
     'R': -1.105839,
     'F': -0.512976,
-    'M': -0.734680, 
-    'Cluster': 1      
+    'M': -0.734680,
+    'Cluster': 1
   },
   {
-    'participant_id':'00d69eec-21b4-470b-b21b-cb3932bb7fdb',
+    'participant_id': '00d69eec-21b4-470b-b21b-cb3932bb7fdb',
     'R': -1.105839,
     'F': -0.512976,
-    'M': -0.734680, 
-    'Cluster': 1      
+    'M': -0.734680,
+    'Cluster': 1
   },
   {
-    'participant_id':'00d69eec-21b4-470b-b21b-cb3932bb7fdb',
+    'participant_id': '00d69eec-21b4-470b-b21b-cb3932bb7fdb',
     'R': -1.105839,
     'F': -0.512976,
-    'M': -0.734680, 
-    'Cluster': 1      
+    'M': -0.734680,
+    'Cluster': 1
   }
 ]);
-const showConfirmationModal = ref(false);
-const showEditModal = ref(false);
-const currentRow = ref(null);
+const selectedCluster = ref("");
 
 onMounted(() => {
-  console.log(selectedCluster.value)
-})
-  
-const openEditModal = (row) => {
-    currentRow.value = { ...row };
-    showEditModal.value = true;
-};
-  
-const openConfirmationModal = (row) => {
-    currentRow.value = row;
-    showConfirmationModal.value = true;
-};
-  
-const deleteRow = async () => {
-    if (!currentRow.value) return;
-    try {
-      const cpf = currentRow.value.cpf;
-      await userApi.deleteUser(cpf);
-      const index = data.value.indexOf(currentRow.value);
-      if (index > -1) {
-        data.value.splice(index, 1);
-      }
-      await fetchUsers();
-      toast.success("Excluído com sucesso!!");
-    } catch (error) {
-      toast.error("Erro ao excluir.");
-    }
-    showConfirmationModal.value = false;
-};
-  
-const updateRow = async (updatedData) => {
-    if (!currentRow.value) return;
+  console.log("Chamando fetchClients");
+  // fetchClients();
+});
 
-    try {
-        const cpf = currentRow.value.cpf;
-        await userApi.updateUser(cpf, updatedData);
-        await fetchUsers();
-        toast.success("Usuário atualizado com sucesso!");
-    } catch (error) {
-        toast.error("Erro ao atualizar usuário.");
-    }
-    showEditModal.value = false; 
+watch(selectedCluster, (cluster) => {
+  if (cluster === "") {
+    console.log("Chamando fetchClients");
+    // fetchClients();
+  } else {
+    console.log("Chamando fetchClientsByCluster com cluster:", cluster);
+    // fetchClientsByCluster(cluster);
+  }
+});
+
+const fetchClients = async () => {
+  try {
+    const response = await clientApi.listClient();
+    data.value = response.data;
+  } catch (error) {
+    console.error("Erro ao carregar clientes:", error);
+    toast.error("Erro ao carregar clientes.");
+  }
 };
+
+const fetchClientsByCluster = async (cluster) => {
+  try {
+    const response = await clientApi.listClientByCluster(cluster)
+    data.value = response.data;
+  } catch (error) {
+    console.error("Erro ao carregar clientes:", error);
+    toast.error("Erro ao carregar clientes.");
+  }
+};
+
+
 
 </script>
-  
-  

@@ -26,9 +26,9 @@
                 Risco de Terceiros
             </router-link>
             <router-link 
-                to="/clientes" 
+                to="/clients" 
                 class="router-link" 
-                :class="{ 'active-link': route.path === '/clientes' }"
+                :class="{ 'active-link': route.path === '/clients' }"
             >
                 Clientes
             </router-link>

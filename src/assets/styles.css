@@ -28,9 +28,11 @@
 }
 
 .container .select-container{
+    width: calc (100vw - 300px);
     display: flex;
-    justify-content: end;
-    width: 72%;
+    justify-content: center;
+    flex-direction: column;
+    height: 50px;
 }
 
 .login-form{

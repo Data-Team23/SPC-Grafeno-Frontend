@@ -52,7 +52,7 @@ const routes = [
     }
   },
   {
-    path: '/clientes',
+    path: '/clients',
     name: 'Clientes',
     component: Clientes,
     meta: {
