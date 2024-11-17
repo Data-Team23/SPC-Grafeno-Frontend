@@ -7,6 +7,7 @@ import Register from "../views/Register.vue";
 import Users from '../views/Users.vue';
 import Dashboard from '../views/Dashboard.vue';
 import Datasets from "../views/Datasets.vue";
+import Gráficos from "../views/Graficos.vue";
 
 const routes = [
   {
@@ -47,6 +48,14 @@ const routes = [
     path: '/dashboard',
     name: 'Dashboard',
     component: Dashboard,
+    meta: { 
+      requiresAuth: true 
+    }
+  },
+  {
+    path: '/grafico',
+    name: 'Gráficos',
+    component: Gráficos,
     meta: { 
       requiresAuth: true 
     }

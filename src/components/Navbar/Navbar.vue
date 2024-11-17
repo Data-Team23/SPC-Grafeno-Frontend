@@ -45,6 +45,13 @@
                 :class="{ 'active-link': route.path === '/users' }"
                 v-if="authStore.userInfo?.is_admin"
             >
+                Gráficos
+            </router-link>
+            <router-link
+                to="/grafico" 
+                class="router-link" 
+                :class="{ 'active-link': route.path === '/grafico' }"
+            >
                 Usuários
             </router-link>
         </div>
