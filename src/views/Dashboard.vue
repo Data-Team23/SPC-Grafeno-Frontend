@@ -4,7 +4,7 @@
       <div class="iframe-container">
         <iframe
           title="API"
-          src="https://app.powerbi.com/reportEmbed?reportId=42b14e2d-f74f-4f12-b30e-96f7551782cb&autoAuth=true&ctid=cf72e2bd-7a2b-4783-bdeb-39d57b07f76f"
+          src="https://app.powerbi.com/groups/me/reports/4d92f045-50c1-4c5e-a953-9ac7a1123f63/63b59f3b57f43501469d?experience=power-bi&bookmarkGuid=f18ca5bf3755f10ab405"
           frameborder="0"
           allowfullscreen="true">
         </iframe>
