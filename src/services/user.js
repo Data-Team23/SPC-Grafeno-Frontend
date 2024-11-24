@@ -1,7 +1,7 @@
 import apiClient from "@/services/base.js";
 
 const createUser = async (payload) => {
-    const data = await apiClient.post(`/user/members/`, payload);
+    const data = await apiClient.post(`/users/register/`, payload);
     return data;
 };
 

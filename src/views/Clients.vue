@@ -2,14 +2,13 @@
   <div class="container">
     <div class="graph-container">
       <h1>Métricas RFM</h1>
-      <br>
+      <div class="graph">
+        <bar-chart :chart-data="dataGraph" :options="chartOptions"></bar-chart>
+      </div>
       <Select v-model="selectedCluster" :options="filterOptions" placeholder="Selecione o cluster">
       </Select>
       <TableComponent :data="data" :display-columns="['participant_id', 'R', 'F', 'M', 'Cluster']"
       :column-names="['Payment', 'Ressência', 'Frequência', 'Valor Monetário (R$)', 'Cluster']" />
-      <div class="graph">
-        <bar-chart :chart-data="dataGraph" :options="chartOptions"></bar-chart>
-      </div>
     </div>
   </div>
 </template>
@@ -46,32 +45,7 @@ ChartJS.register(
   LineController
 );
 
-const dataGraph = {
-  labels: ["Cluster 1", "Cluster 2", "Cluster 3", "Cluster 4"], // Eixo X
-  datasets: [
-    {
-      label: "Recência (R)",
-      data: [10, 20, 15, 25], // Valores de R para cada cluster
-      backgroundColor: "#3B82F6",
-      borderColor: "#2563EB",
-      borderWidth: 1,
-    },
-    {
-      label: "Frequência (F)",
-      data: [12, 18, 22, 30], // Valores de F para cada cluster
-      backgroundColor: "#10B981",
-      borderColor: "#059669",
-      borderWidth: 1,
-    },
-    {
-      label: "Valor Monetário (M)",
-      data: [8, 25, 20, 35], // Valores de M para cada cluster
-      backgroundColor: "#F59E0B",
-      borderColor: "#D97706",
-      borderWidth: 1,
-    },
-  ],
-};
+const dataGraph = ref({});
 
 const chartOptions = {
   responsive: true, // Gráfico responsivo
@@ -111,71 +85,14 @@ const filterOptions = ref([
   },
 ])
 
-const data = ref([
-  {
-    'participant_id': '00d69eec-21b4-470b-b21b-cb3932bb7fdb',
-    'R': -1.107455,
-    'F': -0.512976,
-    'M': -0.123997,
-    'Cluster': 3
-  },
-  {
-    'participant_id': '00d69eec-21b4-720b-b21b-cb3932bb7fdb',
-    'R': -1.525339,
-    'F': -0.512976,
-    'M': -0.514783,
-    'Cluster': 2
-  },
-  {
-    'participant_id': '00d69eec-21b4-230b-b21b-cb3932bb7fdb',
-    'R': -1.105839,
-    'F': -0.594475,
-    'M': -0.734687,
-    'Cluster': 1
-  },
-  {
-    'participant_id': '00d69eec-21b4-771b-b21b-cb3932bb7fdb',
-    'R': -0.905739,
-    'F': -0.512976,
-    'M': -0.821553,
-    'Cluster': 4
-  },
-  {
-    'participant_id': '00d69eec-21b4-445b-b21b-cb3932bb7fdb',
-    'R': -1.658839,
-    'F': -0.098976,
-    'M': -0.712645,
-    'Cluster': 2
-  },
-  {
-    'participant_id': '00d69eec-21b4-192b-b21b-cb3932bb7fdb',
-    'R': -1.105839,
-    'F': -0.232976,
-    'M': 0.265691,
-    'Cluster': 13
-  }
-]);
+const data = ref([]);
 const selectedCluster = ref("");
-
-onMounted(() => {
-  console.log("Chamando fetchClients");
-  // fetchClients();
-});
-
-watch(selectedCluster, (cluster) => {
-  if (cluster === "") {
-    console.log("Chamando fetchClients");
-    // fetchClients();
-  } else {
-    console.log("Chamando fetchClientsByCluster com cluster:", cluster);
-    // fetchClientsByCluster(cluster);
-  }
-});
+const filteredData = ref([]);
 
 const fetchClients = async () => {
   try {
     const response = await clientApi.listClient();
-    data.value = response.data;
+    data.value = response;
   } catch (error) {
     console.error("Erro ao carregar clientes:", error);
     toast.error("Erro ao carregar clientes.");
@@ -185,12 +102,70 @@ const fetchClients = async () => {
 const fetchClientsByCluster = async (cluster) => {
   try {
     const response = await clientApi.listClientByCluster(cluster)
-    data.value = response.data;
+    console.log(response)
+    data.value = response;
   } catch (error) {
     console.error("Erro ao carregar clientes:", error);
     toast.error("Erro ao carregar clientes.");
   }
 };
+
+const updateGraphData = () => {
+  const clusterData = {
+    "Cluster 1": { R: 1.28, F: -0.62, M: -0.99 },
+    "Cluster 2": { R: -0.70, F: -0.45, M: -0.69 },
+    "Cluster 3": { R: 0.65, F: 2.01, M: 0.63 },
+    "Cluster 4": { R: -0.63, F: -0.16, M: 1.11 },
+  };
+
+  // Labels fixas
+  const labels = ["Cluster 1", "Cluster 2", "Cluster 3", "Cluster 4"];
+
+  // Extrair os dados para os datasets
+  const RData = labels.map((label) => clusterData[label].R);
+  const FData = labels.map((label) => clusterData[label].F);
+  const MData = labels.map((label) => clusterData[label].M);
+
+  dataGraph.value = {
+    labels,
+    datasets: [
+      {
+        label: "Recência (R)",
+        data: RData,
+        backgroundColor: "#241C4C",
+      },
+      {
+        label: "Frequência (F)",
+        data: FData,
+        backgroundColor: "#CCD326",
+      },
+      {
+        label: "Valor Monetário (M)",
+        data: MData,
+        backgroundColor: "#FB923C",
+      },
+    ],
+  };
+};
+
+onMounted(() => {
+  console.log("Chamando fetchClients");
+  updateGraphData()
+  fetchClients();
+});
+
+watch([data, selectedCluster], ([newData, newCluster]) => {
+  if (newCluster === "") {
+    fetchClients(); // Se o cluster for vazio, carrega todos os clientes
+  } else {
+    fetchClientsByCluster(newCluster); // Caso contrário, carrega os clientes filtrados por cluster
+    updateGraphData(); // Atualiza o gráfico baseado no cluster selecionado
+  }
+},  { immediate: true });
+
+
+
+
 
 
 
