@@ -25,6 +25,26 @@
     margin-left: 300px;
     padding: 0 15px;
     height: 100vh;
+    overflow-y: auto;
+
+}
+
+.container .select-container, .graph-container{
+    width: calc (100vw - 300px);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    height: 100%;
+}
+
+.graph-container{
+    margin-top: 30%;
+    margin-bottom: 10%;
+    padding: 80px;
+}
+
+.graph{
+    margin-top: 80px;
 }
 
 .login-form{
