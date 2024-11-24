@@ -29,6 +29,11 @@ const listUser = async () => {
     return data;
 };
 
+const verifyCode = async (payload) => {
+    const data = await apiClient.post(`/user/verify/`, payload);
+    return data;
+};
+
 export {
     createUser,
     updateUser,
@@ -36,4 +41,5 @@ export {
     loginUser,
     loginUserWithGoogle,
     listUser,
+    verifyCode,
 };
