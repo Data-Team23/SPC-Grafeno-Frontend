@@ -45,9 +45,6 @@ ChartJS.register(
   LineController
 );
 
-const positiveColors = ["#10B981", "#22C55E", "#4ADE80"]; // Tons de verde
-const negativeColors = ["#F97316", "#EA580C", "#C2410C"]; // Tons de laranja
-
 const dataGraph = ref({});
 
 const chartOptions = {
@@ -88,51 +85,30 @@ const filterOptions = ref([
   },
 ])
 
-const data = ref([
-  {
-    'participant_id': '00d69eec-21b4-470b-b21b-cb3932bb7fdb',
-    'R': -1.107455,
-    'F': -0.512976,
-    'M': -0.123997,
-    'Cluster': 3
-  },
-  {
-    'participant_id': '00d69eec-21b4-720b-b21b-cb3932bb7fdb',
-    'R': -1.525339,
-    'F': -0.512976,
-    'M': 0.514783,
-    'Cluster': 2
-  },
-  {
-    'participant_id': '00d69eec-21b4-230b-b21b-cb3932bb7fdb',
-    'R': -1.105839,
-    'F': -0.594475,
-    'M': -0.734687,
-    'Cluster': 1
-  },
-  {
-    'participant_id': '00d69eec-21b4-771b-b21b-cb3932bb7fdb',
-    'R': -0.905739,
-    'F': -0.512976,
-    'M': 0.821553,
-    'Cluster': 4
-  },
-  {
-    'participant_id': '00d69eec-21b4-445b-b21b-cb3932bb7fdb',
-    'R': -1.658839,
-    'F': -0.098976,
-    'M': 0.712645,
-    'Cluster': 2
-  },
-  {
-    'participant_id': '00d69eec-21b4-192b-b21b-cb3932bb7fdb',
-    'R': -1.105839,
-    'F': -0.232976,
-    'M': 0.265691,
-    'Cluster': 4
-  }
-]);
+const data = ref([]);
 const selectedCluster = ref("");
+const filteredData = ref([]);
+
+const fetchClients = async () => {
+  try {
+    const response = await clientApi.listClient();
+    data.value = response;
+  } catch (error) {
+    console.error("Erro ao carregar clientes:", error);
+    toast.error("Erro ao carregar clientes.");
+  }
+};
+
+const fetchClientsByCluster = async (cluster) => {
+  try {
+    const response = await clientApi.listClientByCluster(cluster)
+    console.log(response)
+    data.value = response;
+  } catch (error) {
+    console.error("Erro ao carregar clientes:", error);
+    toast.error("Erro ao carregar clientes.");
+  }
+};
 
 const updateGraphData = () => {
   const clusterData = {
@@ -174,39 +150,22 @@ const updateGraphData = () => {
 
 onMounted(() => {
   console.log("Chamando fetchClients");
-  // fetchClients();
+  updateGraphData()
+  fetchClients();
 });
 
 watch([data, selectedCluster], ([newData, newCluster]) => {
-  updateGraphData()
   if (newCluster === "") {
-    console.log("Chamando fetchClients");
-    // fetchClients();
+    fetchClients(); // Se o cluster for vazio, carrega todos os clientes
   } else {
-    console.log("Chamando fetchClientsByCluster com cluster:", newCluster);
-    // fetchClientsByCluster(newCluster);
+    fetchClientsByCluster(newCluster); // Caso contrário, carrega os clientes filtrados por cluster
+    updateGraphData(); // Atualiza o gráfico baseado no cluster selecionado
   }
 },  { immediate: true });
 
-const fetchClients = async () => {
-  try {
-    const response = await clientApi.listClient();
-    data.value = response.data;
-  } catch (error) {
-    console.error("Erro ao carregar clientes:", error);
-    toast.error("Erro ao carregar clientes.");
-  }
-};
 
-const fetchClientsByCluster = async (cluster) => {
-  try {
-    const response = await clientApi.listClientByCluster(cluster)
-    data.value = response.data;
-  } catch (error) {
-    console.error("Erro ao carregar clientes:", error);
-    toast.error("Erro ao carregar clientes.");
-  }
-};
+
+
 
 
 
