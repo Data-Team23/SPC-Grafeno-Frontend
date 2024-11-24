@@ -53,14 +53,6 @@ const routes = [
     }
   },
   {
-    path: '/grafico',
-    name: 'Gráficos',
-    component: Gráficos,
-    meta: { 
-      requiresAuth: true 
-    }
-  },
-  {
     path: '/datasets',
     name: 'Datasets',
     component: Datasets,
