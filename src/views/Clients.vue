@@ -111,42 +111,50 @@ const fetchClientsByCluster = async (cluster) => {
 
 const updateGraphData = async () => {
   try {
-    const response = await clientApi.metricGraph()
-    dataGraph.value = response;
+    const response = await clientApi.metricGraph();  // Chama a API para pegar os dados
+    console.log(response)
+    const data = response;
+
+    if (typeof data !== 'object' || data === null) {
+      console.error("A resposta da API não é um objeto válido:", data);
+      toast.error("Erro ao carregar dados do gráfico. Resposta inválida.");
+      return;
+    }
+
+    // Labels são as chaves do objeto (os nomes dos clusters)
+    const labels = Object.keys(data);  // Extrai os nomes dos clusters ("Cluster 1", "Cluster 2", etc.)
+
+    const RData = labels.map(label => data[label].R);
+    const FData = labels.map(label => data[label].F);
+    const MData = labels.map(label => data[label].M);
+
+    // Atualiza os dados do gráfico
+    dataGraph.value = {
+      labels, // Usamos os índices dos clusters como labels
+      datasets: [
+        {
+          label: "Recência (R)",
+          data: RData,
+          backgroundColor: "#241C4C",
+        },
+        {
+          label: "Frequência (F)",
+          data: FData,
+          backgroundColor: "#CCD326",
+        },
+        {
+          label: "Valor Monetário (M)",
+          data: MData,
+          backgroundColor: "#FB923C",
+        },
+      ],
+    };
   } catch (error) {
-    console.error("Erro ao carregar clientes:", error);
-    toast.error("Erro ao carregar clientes.");
+    console.error("Erro ao carregar dados para o gráfico:", error);
+    toast.error("Erro ao carregar dados para o gráfico.");
   }
-
-  // Labels fixas
-  const labels = ["Cluster 1", "Cluster 2", "Cluster 3", "Cluster 4"];
-
-  // Extrair os dados para os datasets
-  const RData = labels.map((label) => dataGraph.value[label].R);
-  const FData = labels.map((label) => dataGraph.value[label].F);
-  const MData = labels.map((label) => dataGraph.value[label].M);
-
-  dataGraph.value = {
-    labels,
-    datasets: [
-      {
-        label: "Recência (R)",
-        data: RData,
-        backgroundColor: "#241C4C",
-      },
-      {
-        label: "Frequência (F)",
-        data: FData,
-        backgroundColor: "#CCD326",
-      },
-      {
-        label: "Valor Monetário (M)",
-        data: MData,
-        backgroundColor: "#FB923C",
-      },
-    ],
-  };
 };
+
 
 onMounted(() => {
   updateGraphData()
