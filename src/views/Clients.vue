@@ -109,21 +109,22 @@ const fetchClientsByCluster = async (cluster) => {
   }
 };
 
-const updateGraphData = () => {
-  const clusterData = {
-    "Cluster 1": { R: 1.28, F: -0.62, M: -0.99 },
-    "Cluster 2": { R: -0.70, F: -0.45, M: -0.69 },
-    "Cluster 3": { R: 0.65, F: 2.01, M: 0.63 },
-    "Cluster 4": { R: -0.63, F: -0.16, M: 1.11 },
-  };
+const updateGraphData = async () => {
+  try {
+    const response = await clientApi.metricGraph()
+    dataGraph.value = response;
+  } catch (error) {
+    console.error("Erro ao carregar clientes:", error);
+    toast.error("Erro ao carregar clientes.");
+  }
 
   // Labels fixas
   const labels = ["Cluster 1", "Cluster 2", "Cluster 3", "Cluster 4"];
 
   // Extrair os dados para os datasets
-  const RData = labels.map((label) => clusterData[label].R);
-  const FData = labels.map((label) => clusterData[label].F);
-  const MData = labels.map((label) => clusterData[label].M);
+  const RData = labels.map((label) => dataGraph.value[label].R);
+  const FData = labels.map((label) => dataGraph.value[label].F);
+  const MData = labels.map((label) => dataGraph.value[label].M);
 
   dataGraph.value = {
     labels,
@@ -149,7 +150,6 @@ const updateGraphData = () => {
 
 onMounted(() => {
   updateGraphData()
-  // fetchClients();
 });
 
 watch(selectedCluster, async (newCluster) => {
