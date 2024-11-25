@@ -1,10 +1,11 @@
 <template>
   <div>
-    <div class="filter-container">
+    <!-- Data filter components -->
+    <!-- <div class="filter-container">
         <Select
           v-model="selectedColumn"
           :options="filterOptions"
-          placeholder="Selecione o tipo de filtro"
+          placeholder="Selecione o cluster"
         >
         </Select>
         <Input
@@ -12,7 +13,7 @@
           icon="fa-solid fa-magnifying-glass"
           v-model="filterQuery"
         />
-    </div>
+    </div> -->
     <table v-if="paginatedData">
       <caption>
         Dados importados
@@ -162,11 +163,19 @@ const filteredData = computed(() => {
 });
 
 const sortedData = computed(() => {
+
   if (!sortColumn.value) return filteredData.value;
 
   return filteredData.value.slice().sort((a, b) => {
-    const aValue = a[sortColumn.value].toLowerCase();
-    const bValue = b[sortColumn.value].toLowerCase();
+    let aValue = a[sortColumn.value]
+    let bValue = b[sortColumn.value]
+    
+    if(typeof a[sortColumn.value] == "string") {
+      aValue = a[sortColumn.value].toString().toLowerCase();
+      bValue = b[sortColumn.value].toString().toLowerCase();
+      if (aValue < bValue) return sortDirection.value === "asc" ? -1 : 1;
+      if (aValue > bValue) return sortDirection.value === "asc" ? 1 : -1;
+    }
 
     if (aValue < bValue) return sortDirection.value === "asc" ? -1 : 1;
     if (aValue > bValue) return sortDirection.value === "asc" ? 1 : -1;
@@ -175,7 +184,6 @@ const sortedData = computed(() => {
 });
 
 const sortTable = (column) => {
-    console.log(column)
   if (sortColumn.value === column) {
     sortDirection.value = sortDirection.value === "asc" ? "desc" : "asc";
   } else {

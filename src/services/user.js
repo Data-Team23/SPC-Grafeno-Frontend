@@ -1,7 +1,7 @@
 import apiClient from "@/services/base.js";
 
 const createUser = async (payload) => {
-    const data = await apiClient.post(`/user/members/`, payload);
+    const data = await apiClient.post(`/users/register/`, payload);
     return data;
 };
 
@@ -29,6 +29,11 @@ const listUser = async () => {
     return data;
 };
 
+const verifyCode = async (payload) => {
+    const data = await apiClient.post(`/user/verify/`, payload);
+    return data;
+};
+
 export {
     createUser,
     updateUser,
@@ -36,4 +41,5 @@ export {
     loginUser,
     loginUserWithGoogle,
     listUser,
+    verifyCode,
 };

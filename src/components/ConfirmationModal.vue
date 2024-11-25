@@ -17,22 +17,22 @@ import { defineProps, defineEmits } from "vue";
 import Button from "@/components/Button/Button.vue";
 
 const props = defineProps({
-showModal: {
+  showModal: {
     type: Boolean,
     required: true,
-},
-title: {
+  },
+  title: {
     type: String,
     required: true,
-},
-message: {
+  },
+  message: {
     type: String,
     required: true,
-},
-action: {
+  },
+  action: {
     type: Function,
     required: true,
-},
+  },
 });
 
 const emits = defineEmits(["close"]);
