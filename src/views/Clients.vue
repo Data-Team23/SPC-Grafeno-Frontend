@@ -86,7 +86,7 @@ const filterOptions = ref([
 ])
 
 const data = ref([]);
-const selectedCluster = ref("");
+const selectedCluster = ref(null);
 const filteredData = ref([]);
 
 const fetchClients = async () => {
@@ -102,7 +102,6 @@ const fetchClients = async () => {
 const fetchClientsByCluster = async (cluster) => {
   try {
     const response = await clientApi.listClientByCluster(cluster)
-    console.log(response)
     data.value = response;
   } catch (error) {
     console.error("Erro ao carregar clientes:", error);
@@ -149,24 +148,18 @@ const updateGraphData = () => {
 };
 
 onMounted(() => {
-  console.log("Chamando fetchClients");
   updateGraphData()
-  fetchClients();
+  // fetchClients();
 });
 
-watch([data, selectedCluster], ([newData, newCluster]) => {
-  if (newCluster === "") {
-    fetchClients(); // Se o cluster for vazio, carrega todos os clientes
+watch(selectedCluster, async (newCluster) => {
+  if (!newCluster) {
+    // Sem cluster selecionado, carrega todos os clientes
+    await fetchClients();
   } else {
-    fetchClientsByCluster(newCluster); // Caso contrário, carrega os clientes filtrados por cluster
-    updateGraphData(); // Atualiza o gráfico baseado no cluster selecionado
+    // Com cluster selecionado, filtra por cluster
+    await fetchClientsByCluster(newCluster);
   }
-},  { immediate: true });
-
-
-
-
-
-
+}, { immediate: true });
 
 </script>
